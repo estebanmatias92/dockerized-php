@@ -16,6 +16,7 @@
             "email": "estebanmatias92@gmail.com"
         }
     ],
+    "license": "MIT",
     "minimum-stability": "stable",
     "scripts": {
         "post-create-project-cmd": "php scripts/refactor-namespace.php"
