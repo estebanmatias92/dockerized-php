@@ -1,0 +1,17 @@
+#
+# Ignore everything
+#
+*
+
+
+#
+# Include artifacts needed for building stages 
+#
+
+### App ###
+!config
+!public
+!src
+
+### Composer ###
+!composer.*
