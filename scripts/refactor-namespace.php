@@ -1,7 +1,5 @@
 <?php
 
-<?php
-
 function getPhpFiles($dir, $excludeFile) {
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
     $phpFiles = [];
