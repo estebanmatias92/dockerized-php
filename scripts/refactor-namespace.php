@@ -7,7 +7,7 @@ function getPhpFiles($dir, $excludeFile) {
         if ($file->isDir()) continue;
         if (strtolower($file->getExtension()) === 'php') {
             if ($file->getPathname() !== $excludeFile) {
-                $phpFiles[] = $file->getPathname();
+                array_push($phpFiles, $file->getPathname());
             }
         }
     }
