@@ -1,37 +1,29 @@
-<?php
+<?php 
 
-function getPhpFiles($dir, $excludeFile) {
-    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
-    $phpFiles = [];
-    foreach ($iterator as $file) {
-        if ($file->isDir()) continue;
-        if (strtolower($file->getExtension()) === 'php') {
-            if ($file->getPathname() !== $excludeFile) {
-                array_push($phpFiles, $file->getPathname());
-            }
-        }
-    }
-    return $phpFiles;
-}
+require_once 'FileProcessor.php'; // Include the FileProcessor class
 
-function replaceNamespace($filePath, $oldNamespace, $newNamespace) {
-    $content = file_get_contents($filePath);
-    $content = str_replace($oldNamespace, $newNamespace, $content);
-    file_put_contents($filePath, $content);
-}
+// Menu Screen
 
+// Asking the customizations
 echo "Enter the new namespace: ";
 $newNamespace = trim(fgets(STDIN));
 
-$oldNamespace = '{{ placeholder }}'; 
-$scriptFile = __FILE__; // Path to the current script
-$projectDir = dirname(__DIR__);// Root
+// Preparing directory, files and patterns to search and replace
+$directory = dirname(__DIR__);
+$fileNames = ['**/*.php', 'composer.json']; // Files to process, you can use expressions
+$replacements = [
+    "{{ placeholder }}" => $newNamespace
+]; // Patterns and their replacements
 
-$phpFiles = getPhpFiles($projectDir, $scriptFile);
+// Instantiate the FileProcessor
+$processor = new FileProcessor($fileNames, $directory, true);
 
-foreach ($phpFiles as $file) {
-    replaceNamespace($file, $oldNamespace, $newNamespace);
-    echo "Updated namespace in file: $file\n";
+// Process the files
+$modifiedFiles = $processor->processFiles($replacements);
+
+// Showing the results
+echo "\nModified files:\n"
+
+foreach ($modifiedFiles as $file) {
+    echo "\t- " . $file . "\n";
 }
-
-echo "Namespace refactoring complete.\n";
