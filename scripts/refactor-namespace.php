@@ -22,7 +22,7 @@ $processor = new FileProcessor($fileNames, $directory, true);
 $modifiedFiles = $processor->processFiles($replacements);
 
 // Showing the results
-echo "\nModified files:\n"
+echo "\nModified files:\n";
 
 foreach ($modifiedFiles as $file) {
     echo "\t- " . $file . "\n";
