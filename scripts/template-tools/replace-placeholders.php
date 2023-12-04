@@ -1,29 +1,31 @@
 <?php 
 
-require_once 'FileProcessor.php'; // Include the FileProcessor class
+require_once __DIR__ . '/FileProcessor.php'; // Include the FileProcessor class
 
 // Menu Screen
 
 // Asking the customizations
-echo "Enter the new namespace: ";
+echo "Please enter new namespace: ";
 $newNamespace = trim(fgets(STDIN));
 
 // Preparing directory, files and patterns to search and replace
-$directory = dirname(__DIR__);
-$fileNames = ['**/*.php', 'composer.json']; // Files to process, you can use expressions
+$directory = dirname(dirname(__DIR__));
+$fileNames = ['*.php', 'composer.json']; // Files to process, you can use expressions
 $replacements = [
-    "{{ placeholder }}" => $newNamespace
+    "{{ placeholder.namespace }}" => $newNamespace
 ]; // Patterns and their replacements
 
 // Instantiate the FileProcessor
 $processor = new FileProcessor($fileNames, $directory, true);
+$processor->setExcludedDirectories(['config', 'scripts', 'vendor/']);
 
 // Process the files
 $modifiedFiles = $processor->processFiles($replacements);
 
+
 // Showing the results
-echo "\nModified files:\n";
+echo "\nUpdated files:\n";
 
 foreach ($modifiedFiles as $file) {
-    echo "\t- " . $file . "\n";
+    echo "    - " . $file . "\n";
 }

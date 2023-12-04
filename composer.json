@@ -12,14 +12,14 @@
     ],
     "autoload": {
         "psr-4": {
-            "DockerizedPHP\\": "src/"
+            "{{ placeholder.namespace }}\\": "src/"
         },
         "files": [
             "src/helper_module/utilities.php"
         ]
     },
     "scripts": {
-        "post-create-project-cmd": "php scripts/refactor-namespace.php"
+        "post-create-project-cmd": "php scripts/template-tools/replace-placeholders.php"
     },    
     "require": {}
 }

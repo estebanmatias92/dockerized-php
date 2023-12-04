@@ -1,5 +1,5 @@
 <?php
-namespace {{ placeholder }}\HelperModule;
+namespace {{ placeholder.namespace }}\HelperModule;
 
 /*
     Another hello world print

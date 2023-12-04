@@ -1,8 +1,8 @@
 <?php
-namespace {{ placeholder }};
+namespace {{ placeholder.namespace }};
 
-use {{ placeholder }}\Config\Config;
-use function {{ placeholder }}\HelperModule\hello_world;
+use {{ placeholder.namespace }}\Config\Config;
+use function {{ placeholder.namespace }}\HelperModule\hello_world;
 
 /*
     Main app object

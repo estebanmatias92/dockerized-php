@@ -1,5 +1,5 @@
 <?php
-namespace {{ placeholder }}\Config;
+namespace {{ placeholder.namespace }}\Config;
 
 /*
     Config entity

@@ -5,8 +5,8 @@ $baseDir = dirname(__DIR__);
 // Preparing autoloader (thanks composer!)
 require_once $baseDir . '/vendor/autoload.php';
 // Importing the entrypoint 
-use {{ placeholder }}\App;
-use {{ placeholder }}\Config\Config;
+use {{ placeholder.namespace }}\App;
+use {{ placeholder.namespace }}\Config\Config;
 
 // Load configuration and create the Config entity
 $configData = require $baseDir . '/config/config.php';

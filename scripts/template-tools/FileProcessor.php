@@ -1,9 +1,13 @@
 <?php
 
+// Get recursiveGlob
+require_once __DIR__ . "/utilities.php";
+
 class FileProcessor {
     private $directory;
     private $fileNames;
     private $isRecursive;
+    private $excludedDirectories = [];
 
     /**
      * @param array $fileNames An array with the name/expression of the files you want to be included in the processing.
@@ -29,37 +33,65 @@ class FileProcessor {
         $this->fileNames = $fileNames;
     }
 
+    // Setter for $excludedDirectories
+    public function setExcludedDirectories(array $excludedDirectories) {
+        $this->excludedDirectories = array_map(function($dir) {
+            return $this->directory . rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        }, $excludedDirectories);
+    }
+
     // Replace all the placeholders in all the files
     public function processFiles(array $replacements) {
         $files = $this->getAllFiles();
         $pattern = $this->createPattern($replacements);
 
         foreach ($files as $file) {
+            //echo "Filename: {$file}\n"; // Borrar
             if ($this->processFile($file, $pattern, $replacements)) {
                 yield $file;
             }
         }        
     }
 
-    // Merge and return all the filepaths
+    /**
+     * Retrieves all file paths based on the specified file names.
+     * 
+     * @return array An array of file paths.
+     */
     private function getAllFiles() {
         $list = [];
-        $globOptions = ($this->isRecursive) ? GLOB_BRACE : 0;
-    
+
         foreach ($this->fileNames as $fileName) {
-            $pattern = $this->directory . $fileName;
-            $files = glob($pattern, $globOptions);
-            $list = array_merge($list, $files);
+            $filePaths = $this->findFiles($fileName);
+            $list = array_merge($list, $filePaths);
         }
-    
+
         return $list;
+    }
+
+    /**
+     * Finds files based on a given pattern. It decides whether to perform a recursive search
+     * or a regular glob search based on the value of $this->isRecursive.
+     * 
+     * @param string $pattern The file name or pattern to search for.
+     * 
+     * @return array An array of file paths that match the given pattern.
+     */
+    private function findFiles(string $pattern) {
+        if ($this->isRecursive) {
+            // Perform a recursive search if $this->isRecursive is true.
+            return recursiveGlob($this->directory, [$pattern], $this->excludedDirectories);
+        } else {
+            // Perform a regular glob search otherwise.
+            return glob($this->directory . $pattern);
+        }
     }
 
     /**
      * Build and return a regular expresion with the placeholders
      * 
      * @param array $replacements Set an associative array with the patterns as Keys and the new values to replace as Values.
-     * 
+
      * @return string Returns a regular expression with all the patterns/placeholders concatenated.
      */
     private function createPattern(array $replacements) {
